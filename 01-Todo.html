@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+<div class="container">
+    <h1>我的ToDo</h1>
+    <form class="add-task">
+        <input type="text" placeholder="e.g.输入你将要办理的事情">
+        <button type="submit">提交</button>
+        <!--<input type="submit">-->
+    </form>
+    <ul class="task-list">
+        <li class="task-item">
+            <input type="checkbox" class="complete">
+            <!--<input type="radio" class="complete">-->
+            <span class="task-content">今晚回去打豆豆</span>
+            <div class="fr">
+                <span class="action delete">删除</span>
+                <span class="action detail">详细</span>
+            </div>
+        </li>
+        <li class="task-item">
+            <input type="checkbox" class="complete">
+            <!--<input type="radio" class="complete">-->
+            <span class="task-content">打完豆豆就睡觉</span>
+            <div class="fr">
+                <span class="action delete">删除</span>
+                <span class="action detail">详细</span>
+            </div>
+        </li>
+
+    </ul>
+    <div class="task-detail-mask"></div>
+    <div class="task-tail">
+        <form>
+            <h2>这是标题</h2>
+            <div class="input-item">
+                <textarea></textarea>
+            </div>
+            <div class="remind input-item">
+                <label >提醒时间</label>
+                <input type="date" class="datetime">
+            </div>
+            <!--<input type="button" value="提交">-->
+            <button>更新</button>
+            <div class="close">X</div>
+        </form>
+    </div>
+</div>
+
+
+</body>
+</html>
