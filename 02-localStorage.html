@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+  /*  var arr=[
+        {content:"12312",complted:true,date:20173211},
+        {content:"12321",conplted:true,date:20173211},
+        {},
+        {},
+        {},
+        {},
+    ]*/
+
+    /*
+    *  npm install
+    *  npm uninstall
+    *
+    *
+    * */
+
+
+    localStorage.setItem("key","value");
+    sessionStorage.setItem("key1","value1");
+
+    localStorage.getItem("key");
+    sessionStorage.getItem("key1");
+
+    alert(sessionStorage.getItem("key1"));
+
+    /*删除*/
+    sessionStorage.removeItem("key");
+    localStorage.removeItem("site");
+
+
+    /*clear  清除所有的key/value*/
+    sessionStorage.clear();
+    localStorage.clear();
+
+
+
+
+
+
+</script>
+</body>
+</html>

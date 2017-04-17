@@ -2,7 +2,8 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <meta name="viewport">
+    <title>todo</title>
     <link rel="stylesheet" href="css/normalize.css">
     <link rel="stylesheet" href="css/main.css">
 </head>
@@ -16,9 +17,9 @@
         <!--<input type="submit">-->
     </form>
     <ul class="task-list">
-        <li class="task-item">
+        <!--<li class="task-item">
             <input type="checkbox" class="complete">
-            <!--<input type="radio" class="complete">-->
+            &lt;!&ndash;<input type="radio" class="complete">&ndash;&gt;
             <span class="task-content">今晚回去打豆豆</span>
             <div class="fr">
                 <span class="action delete">删除</span>
@@ -27,19 +28,19 @@
         </li>
         <li class="task-item">
             <input type="checkbox" class="complete">
-            <!--<input type="radio" class="complete">-->
+            &lt;!&ndash;<input type="radio" class="complete">&ndash;&gt;
             <span class="task-content">打完豆豆就睡觉</span>
             <div class="fr">
                 <span class="action delete">删除</span>
                 <span class="action detail">详细</span>
             </div>
-        </li>
-
+        </li>-->
     </ul>
-    <div class="task-detail-mask"></div>
-    <div class="task-tail">
+
+   <!-- <div class="task-detail-mask"></div>
+         <div class="task-detail">
         <form>
-            <h2>这是标题</h2>
+            <h2 class="content">这是标题</h2>
             <div class="input-item">
                 <textarea></textarea>
             </div>
@@ -47,13 +48,27 @@
                 <label >提醒时间</label>
                 <input type="date" class="datetime">
             </div>
-            <!--<input type="button" value="提交">-->
+            &lt;!&ndash;<input type="button" value="提交">&ndash;&gt;
             <button>更新</button>
             <div class="close">X</div>
         </form>
+    </div>-->
+</div>
+
+<!--自定义弹框-->
+<div class="alertA" style="display:none;color: rgb(68, 68, 68); width: 300px; height: auto; padding: 15px 10px; position: fixed; border-radius: 3px; box-shadow: rgba(0, 0, 0, 0.498039) 0px 1px 2px; left: 543px; top: 200px; background: rgb(255, 255, 255);">
+    <div class="pop-title" style="padding: 5px 10px; font-weight: 900; font-size: 20px; text-align: center;">确定删除?</div>
+    <div class="pop-content" style="padding: 5px 10px; text-align: center;">
+        <div>
+            <button style="margin-right: 5px;" class="primary confirm">确定</button>
+            <button class="cancel">取消</button>
+        </div>
     </div>
 </div>
 
 
+<script src="node_modules/jquery/dist/jquery.js"></script>
+<script src="node_modules/store.js/store.js"></script>
+<script src="js/base.js"></script>
 </body>
 </html>
