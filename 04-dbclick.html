@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        .box{
+            margin: 100px;
+        }
+        #text{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="box">
+    <p id="dbtext">双击我 编辑</p>
+    <input type="text" id="text">
+</div>
+
+<script>
+    var dbtext=document.getElementById("dbtext");
+    var text=document.getElementById("text");
+    dbtext.ondblclick=function(){
+        this.style.display="none";
+        text.style.display="block";
+        text.value=this.innerHTML;
+        //获取焦点
+        text.focus();
+
+        //失去焦点
+        text.onblur=function(){
+
+            text.style.display="none";
+            dbtext.style.display="block";
+
+            if (text.value == "")
+            {
+                return
+            }
+            else
+            {
+                dbtext.innerHTML=text.value;
+            }
+        }
+
+    }
+</script>
+</body>
+</html>

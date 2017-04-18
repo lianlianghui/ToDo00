@@ -67,16 +67,39 @@
     function renew_task_list() {
         var $task_listUL=$(".task-list");
         $task_listUL.html(null);  //清空UL
+        var is_complate=[];  //定义一个新的checked数组
         for(var i=0;i<task_list.length;i++)
         {
+            if(task_list[i].complate)
+            {
+                //放到一个新的数组
+                is_complate[i]=task_list[i];
+                //console.log(is_complate)
+            }
+            else
+            {
+                //创建li  这里只循环task_list[i].complate=false
+                var $item=task_list_tpl(task_list[i],i);
+                $task_listUL.append($item);
+            }
+        }
 
-            //创建li
-            var $item=task_list_tpl(task_list[i],i);
-            $task_listUL.prepend($item);
+        for(var j=0;j<is_complate.length;j++)
+        {
+            var $item01=task_list_tpl(is_complate[j],j);
+            $task_listUL.append($item01);
+
+            if(!$item01) continue;  //跳过
+            console.log($item01);
+            $item01.addClass("is_complate")
+
         }
 
         delete_event();   //点击删除事件
         detail_list_event();  //详细列表点击事件
+        complate_select();  //选中事件
+
+
     }
 
     //li的html
@@ -84,7 +107,7 @@
         //task_list[i].content;
         if(!data) return;
         var $str='<li class="task-item" data-index="'+index+'">'+
-            '<input type="checkbox" class="complete">'+
+            '<input type="checkbox" class="complete"'+(data.complate ? "checked" : "")+'>'+
             '<span class="task-content">'+data.content+'</span>'+
             '<div class="fr">'+
             '<span class="action delete">删除</span>'+
@@ -92,7 +115,8 @@
             '</div>'+
             '</li>';
 
-        return $str;
+        //return $str;    一定要返回jquery对象
+        return $($str);
     }
 
 
@@ -103,7 +127,8 @@
         $(".alertA").show();  //显示
         $(".primary.confirm").bind("click",function () {
 
-            delete task_list[index];  //删除
+            //delete task_list[index];  //删除
+            task_list.splice(index,1);
             renew_delete_list(); //更新删除后的li
             $(".alertA").hide();  //隐藏
             $(".primary.confirm").unbind("click");  //解绑
@@ -167,9 +192,20 @@
             var index=$(this).parent().parent().data("index");
             var $item=detail_task_tpl(task_list[index]);
             $(".task-list").after($item) ; //插入html
-            
+
+            //删除弹框
+            $(".task-detail-mask").click(function () {
+                /* remove($(".task-detail-mask"));
+                 remove($(".task-detail"))*/
+                $(".task-detail-mask").remove();
+                $(".task-detail").remove()
+            });
+
+            up_detailed(index);  //提交
+            dbclick(index); //双击修改
+            complate_select();  //选中
+
         });
-        
 
     }
 
@@ -178,30 +214,120 @@
         var $str=
             '<div class="task-detail-mask"></div>'+
             '<div class="task-detail">'+
-            '<form>'+
+            '<form class="up_data">'+
             '<h2 class="content">'+data.content+'</h2>'+
+            '<div class="input-item dbtext">'+
+            '<input type="text">'+
+            '</div>'+
             '<div class="input-item">'+
-            '<textarea></textarea>'+
+            '<textarea>'+(data.dsk || "") +'</textarea>'+
             '</div>'+
             '<div class="remind input-item">'+
             '<label >提醒时间</label>'+
-            '<input type="date" class="datetime">'+
+            '<input type="date" class="datetime" value="'+data.datetime+'">'+
             '</div>'+
             '<button class="update">更新</button>'+
             '<div class="close">X</div>'+
             '</form>'+
             '</div>';
-        return $str;
+        return $($str);
     }
 
+
+    //提交新数据
+    //1.新建一个对象newobj
+    //2.给对象赋值 newobj.content=.......
+    //3.task_list[index]=newobj
+    //4. store.set("gg",task_list)   把数据存到浏览器
+
+
     //更新
-    function detail_task_update() {
-        
+    function up_detailed(index) {
+        var $up_data=$(".task-detail .up_data");
+        $up_data.on("submit",function (ev) {
+            //阻止默认事件
+            ev.preventDefault();
+
+            var newObj={};
+            newObj.content=$up_data.find(".content").text();
+            newObj.dsk=$up_data.find(".input-item textarea").val();
+            newObj.datetime=$up_data.find(".input-item .datetime").val();
+
+            up_data(index,newObj);
+
+        })
+    }
+
+    //更新数据
+    function up_data(index,newObj) {
+        //console.log(task_list[index]);
+        //task_list[index]=newObj;
+        task_list[index]=$.extend({},task_list[index],newObj);  //task_list[index]要放前面
+        //console.log(task_list[index]);
+        store.set("gg",task_list);
+        renew_task_list();
     }
     
+/*
     //关闭
     function close_task_detail() {
 
+    }
+*/
+
+    //双击事件
+    function dbclick(index){
+
+        var $dbclick=$(".task-detail .up_data .content");
+        var $dbtext=$(".input-item.dbtext")
+        $dbclick.on("dblclick",function () {
+            var $that=$(this);
+            $that.hide();
+            $dbtext.show();
+            $dbtext.find("input").focus().val($that.text());   // 获取焦点
+            
+            $dbtext.find("input").blur(function () {
+
+                $dbtext.hide();
+                $that.show();
+
+                if($dbtext.find("input").val()== "")
+                {
+                    return
+                }
+                else {
+                    $dbclick.text($dbtext.find("input").val());  //赋值
+                }
+            })
+        })
+    }
+
+
+    /*-----------------------详细功能-------------------------------------*/
+
+    //获取 index
+    //判断 task_list[index].complate ? 返回一个对象 &&　合并
+    //
+
+    //选择事件
+    function complate_select() {
+        var complate=$(".task-list .complete");  //checkbox的class就是complete
+
+        complate.on("click",function () {
+            var index=$(this).parent().data("index");
+
+            if(task_list[index].complate)
+            {
+                up_data(index,{complate:false})
+            }
+            else
+            {
+                up_data(index,{complate:true})
+            }
+
+           // console.log(task_list[index])
+
+        })
     }
 
 }());

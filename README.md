@@ -49,3 +49,17 @@
        //点击事件
 
 
+
+#### 4.3.4  更新详细列表
+
+    //1.新建一个对像 newobj
+    //2.给对像负值 newobj.content=....
+    //3.task_list[index]=newobj
+    //4. store.set("gg",task_list)   把数据存到浏览器
+
+
+#### 4.3.5  complate
+
+  1. 循环 task_list
+  2. 判断 task_list[i].complate ?  放到一个新的数组里面
+  3.append(新的数组)
