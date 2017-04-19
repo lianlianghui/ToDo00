@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<input type="button" id="btn" value="播放">
+
+<video src="alert.mp3" id="music" controls style="display: none">
+
+</video>
+
+<script>
+    var oBtn=document.getElementById("btn");
+    var music=document.getElementById("music");
+
+    oBtn.onclick=function () {
+       // music.play();  // 播放
+       // music.pause() ;  //停止
+        //this.value="暂停"
+
+        if(this.value == "播放")
+        {
+            this.value= "暂停";
+            music.play();
+        }
+        else{
+            this.value = "播放";
+            music.pause();
+        }
+
+    }
+</script>
+</body>
+</html>

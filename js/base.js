@@ -53,6 +53,7 @@
         //console.log(store.get("gg"))
         task_list=store.get("gg") || [] ;
         renew_task_list() ; //更新li
+        cooktimer()();  //时间提醒
     }
 
     function add_task(new_task) {
@@ -90,7 +91,7 @@
             $task_listUL.append($item01);
 
             if(!$item01) continue;  //跳过
-            console.log($item01);
+            //console.log($item01);
             $item01.addClass("is_complate")
 
         }
@@ -98,7 +99,7 @@
         delete_event();   //点击删除事件
         detail_list_event();  //详细列表点击事件
         complate_select();  //选中事件
-
+       // cooktimer()();  //时间提醒
 
     }
 
@@ -194,7 +195,7 @@
             $(".task-list").after($item) ; //插入html
 
             //删除弹框
-            $(".task-detail-mask").click(function () {
+            $(".task-detail-mask,.task-detail .close").click(function () {
                 /* remove($(".task-detail-mask"));
                  remove($(".task-detail"))*/
                 $(".task-detail-mask").remove();
@@ -204,6 +205,7 @@
             up_detailed(index);  //提交
             dbclick(index); //双击修改
             complate_select();  //选中
+            datetimerpicker();  //日期插件
 
         });
 
@@ -224,7 +226,7 @@
             '</div>'+
             '<div class="remind input-item">'+
             '<label >提醒时间</label>'+
-            '<input type="date" class="datetime" value="'+data.datetime+'">'+
+            '<input type="text" class="datetime datetimepicker " value="'+(data.datetime || "")+'">'+
             '</div>'+
             '<button class="update">更新</button>'+
             '<div class="close">X</div>'+
@@ -329,6 +331,76 @@
 
         })
     }
+
+    //日期插件
+    function datetimerpicker() {
+        jQuery.datetimepicker.setLocale('zh');  //中文
+        $(".datetimepicker").datetimepicker({
+            theme:'dark'
+        });
+    }
+
+
+/*--------------------------------------------*/
+
+    //时间提醒
+    function cooktimer() {
+        var timer=null;
+        return function () {
+            timer=setInterval(function () {
+                //获取最新的毫秒数
+                var current=new Date().getTime();
+
+
+                //获取结束时间
+                for(var i=0;i< task_list.length;i++)
+                {
+                    //完成了 || off || 没有时间  continuec
+                    if(task_list[i].complate || task_list[i].off || !task_list[i].datetime ) continue;
+
+                    var end_current = (new Date(task_list[i].datetime)).getTime();  //结束时间的毫秒数
+
+                    //结束时间的毫秒数 - 最新时间的毫秒数 < 1 ? 到时间了  要放音乐
+                    if(end_current-current < 1)
+                    {
+                        clearInterval(timer);
+                        //console.log("到时间了，放music")
+
+
+                        //显示 msg
+                        showMsg(task_list[i].content);
+                        up_data(i,{off:true});
+
+                        //播放music (是一个函数）
+                        musicPlay();
+
+
+
+                    }
+                }
+            },1000)
+        }
+    }
+
+
+    //播放音乐
+    function musicPlay() {
+        var music= document.getElementById("music");
+        music.play();
+    }
+
+    //显示 msg
+    function showMsg(content) {
+        $(".msg").show();  //显示
+        var msgContent=$(".msg-content");
+        msgContent.text(content);
+
+        $(".anchor.confirmed").click(function () {
+            $(".msg").hide();
+            cooktimer()();  //时间提醒
+        })
+    }
+
 
 }());
 

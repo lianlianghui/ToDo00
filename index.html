@@ -5,14 +5,16 @@
     <meta name="viewport">
     <title>todo</title>
     <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="node_modules/jquery-datetimepicker/jquery.datetimepicker.css" >
+
     <link rel="stylesheet" href="css/main.css">
 </head>
 <body>
 
-<!-- <div class="msg" style="display:block">
+ <div class="msg" >
     <span class="msg-content"></span>
     <span class="anchor confirmed">知道了</span>
-</div> -->
+</div>
 
 <div class="container">
     <h1>我的ToDo</h1>
@@ -71,8 +73,14 @@
     </div>
 </div>
 
+<!--music-->
+ <video src="alert.mp3" id="music" style="display: none"></video>
+
+
 
 <script src="node_modules/jquery/dist/jquery.js"></script>
+<script src="node_modules/jquery-datetimepicker/build/jquery.datetimepicker.full.min.js"></script>
+
 <script src="node_modules/store.js/store.js"></script>
 <script src="js/base.js"></script>
 </body>
